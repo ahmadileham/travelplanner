@@ -4,6 +4,9 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
+
+@Entity
+@Table(name = "budget")
 public class Budget {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,7 +16,7 @@ public class Budget {
     @JoinColumn(name = "trip_id", referencedColumnName = "id")
     private Trip trip;
 
-    @OneToMany(mappedBy = "expense", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "budget", cascade = CascadeType.ALL)
     private List<Expense> expenses;
 
     @Column(nullable = false)

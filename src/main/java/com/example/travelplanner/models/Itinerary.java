@@ -4,6 +4,9 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
+
+@Entity
+@Table(name = "itinerary")
 public class Itinerary {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,7 +16,7 @@ public class Itinerary {
     @JoinColumn(name = "trip_id", referencedColumnName = "id")
     private Trip trip;
 
-    @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "itinerary", cascade = CascadeType.ALL)
     private List<Activity> activities;
 
     public int getId() {

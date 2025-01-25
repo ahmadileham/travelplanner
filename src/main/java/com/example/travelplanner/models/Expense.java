@@ -2,6 +2,9 @@ package com.example.travelplanner.models;
 
 import jakarta.persistence.*;
 
+
+@Entity
+@Table(name = "expense")
 public class Expense {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +18,10 @@ public class Expense {
 
     @Column(columnDefinition = "TEXT")
     private String remarks;
+
+    @ManyToOne
+    @JoinColumn(name = "budget_id", referencedColumnName = "id")
+    private Budget budget;
 
     public int getId() {
         return id;

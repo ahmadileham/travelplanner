@@ -4,6 +4,9 @@ import java.util.List;
 
 import jakarta.persistence.*;
 
+
+@Entity
+@Table(name = "packinglist")
 public class PackingList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,7 +16,7 @@ public class PackingList {
     @JoinColumn(name = "trip_id", referencedColumnName = "id")
     private Trip trip;
 
-    @OneToMany(mappedBy = "packingitem", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "packingList", cascade = CascadeType.ALL)
     private List<PackingItem> packingItems;
 
     public int getId() {

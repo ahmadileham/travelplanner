@@ -2,6 +2,9 @@ package com.example.travelplanner.models;
 
 import jakarta.persistence.*;
 
+
+@Entity
+@Table(name = "packingitem")
 public class PackingItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
