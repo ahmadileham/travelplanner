@@ -14,6 +14,8 @@ import com.example.travelplanner.repository.ItineraryRepository;
 import com.example.travelplanner.repository.PackingListRepository;
 import com.example.travelplanner.repository.TripRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class TripService {
     @Autowired
@@ -56,5 +58,25 @@ public class TripService {
 
         return savedTrip;
     }
-}
+
+    @Transactional
+    public void deleteTrip(int tripId) {
+        Trip trip = tripRepository.findById(tripId)
+            .orElseThrow(() -> new RuntimeException("Trip not found"));
+        tripRepository.delete(trip);
+    }
+
+    @Transactional
+    public void updateTrip(int tripId, Trip updatedTrip) {
+        Trip existingTrip = tripRepository.findById(tripId)
+            .orElseThrow(() -> new RuntimeException("Trip not found"));
+        
+        existingTrip.setTripName(updatedTrip.getTripName());
+        existingTrip.setDestination(updatedTrip.getDestination());
+        existingTrip.setStartDate(updatedTrip.getStartDate());
+        existingTrip.setEndDate(updatedTrip.getEndDate());
+        
+        tripRepository.save(existingTrip);
+    }
+    }
 

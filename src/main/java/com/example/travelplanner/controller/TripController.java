@@ -54,5 +54,23 @@ public class TripController {
         return "add-trip";
     }
 
+    @GetMapping("/edit-form/{id}")
+    public String showEditTripForm(@PathVariable int id, Model model) {
+        model.addAttribute("trip", tripService.getTripDetails(id));
+        return "edit-trip";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteTrip(@PathVariable int id) {
+        tripService.deleteTrip(id);
+        return "redirect:/trips";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateTrip(@PathVariable int id, @ModelAttribute Trip trip) {
+        tripService.updateTrip(id, trip);
+        return "redirect:/trips/" + id;
+    }
+
 }
 
