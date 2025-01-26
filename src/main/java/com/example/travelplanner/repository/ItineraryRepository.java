@@ -6,4 +6,6 @@ import com.example.travelplanner.models.Itinerary;
 
 public interface ItineraryRepository extends JpaRepository<Itinerary,Integer>{
 
+    Itinerary findByTripId(int tripId);
+
 }

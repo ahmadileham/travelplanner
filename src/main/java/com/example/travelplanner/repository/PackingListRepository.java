@@ -6,4 +6,6 @@ import com.example.travelplanner.models.PackingList;
 
 public interface PackingListRepository extends JpaRepository<PackingList,Integer>{
 
+    PackingList findByTripId(int tripId);
+
 }
