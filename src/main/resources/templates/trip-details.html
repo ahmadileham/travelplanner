@@ -58,7 +58,7 @@
             <h5 class="mb-0">Travel Itinerary</h5>
             <a class="btn btn-outline-primary btn-sm" 
             th:href="@{/itinerary/form(tripId=${trip.id})}">
-                <i class="fas fa-edit"></i> Manage Itinerary
+                <i class="fas fa-plus me-1"></i> Add More Activities
             </a>
         </div>
         <div class="card-body">
@@ -69,6 +69,7 @@
                         <th>Date & Time</th>
                         <th>Activity</th>
                         <th>Location</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,6 +81,25 @@
                         </td>
                         <td th:text="${activity.activityName}"></td>
                         <td th:text="${activity.destination}"></td>
+                        <td>
+                            <!-- Edit Button -->
+                            <a th:href="@{/itinerary/edit/{id}(id=${activity.id})}" 
+                            class="text-primary me-2" 
+                            title="Edit">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                            </a>
+                            
+                            <!-- Delete Button -->
+                            <form th:action="@{/itinerary/delete/{id}(id=${activity.id})}" 
+                                method="post" 
+                                class="d-inline">
+                                <button type="submit" 
+                                        class="btn btn-link text-danger p-0" 
+                                        title="Delete">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 </tbody>
             </table>
