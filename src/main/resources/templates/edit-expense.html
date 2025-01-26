@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Expense</title>
+</head>
+<body>
+    <div th:replace="~{header}"></div>
+    
+    <div class="container mt-4">
+        <h1>Edit Expense</h1>
+        <form th:action="@{/expenses/update/{id}(id=${expense.id})}" method="post" th:object="${expense}">
+            <div class="mb-3">
+                <label for="expenseCategory" class="form-label">Category</label>
+                <input type="text" class="form-control" id="expenseCategory" 
+                       th:field="*{expenseCategory}" required>
+            </div>
+            <div class="mb-3">
+                <label for="amount" class="form-label">Amount</label>
+                <input type="number" class="form-control" id="amount" 
+                       th:field="*{amount}" step="0.01" required>
+            </div>
+            <div class="mb-3">
+                <label for="remarks" class="form-label">Remarks</label>
+                <input type="text" class="form-control" id="remarks" 
+                       th:field="*{remarks}">
+            </div>
+            <button type="submit" class="btn btn-primary">Update Expense</button>
+        </form>
+    </div>
+
+    <div th:replace="~{footer}"></div>
+</body>
+</html>
