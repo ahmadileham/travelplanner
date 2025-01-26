@@ -29,7 +29,7 @@ public class TripController {
         Trip trip = tripService.getTripDetails(id);
         model.addAttribute("trip", trip);
         
-        boolean isBudgetEmpty = trip.getBudget().getExpenses().isEmpty() && trip.getBudget().getTotalBudget() == 0;
+        boolean isBudgetEmpty = trip.getBudget().getExpenses().isEmpty() || trip.getBudget().getTotalBudget() == 0;
         boolean isPackingListEmpty = trip.getPackingList().getPackingItems().isEmpty();
         boolean isItineraryEmpty = trip.getItinerary().getActivities().isEmpty();
         

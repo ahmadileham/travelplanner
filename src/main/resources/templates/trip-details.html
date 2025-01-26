@@ -15,8 +15,8 @@
                 <strong>Date:</strong> 
                 <span th:text="${#dates.format(trip.startDate, 'yyyy-MM-dd')}"></span> to 
                 <span th:text="${#dates.format(trip.endDate, 'yyyy-MM-dd')}"></span><br>
-                <strong th:if="${!isBudgetEmpty}">Total Budget: <span th:text="RM ${trip.budget.totalBudget}"></span></strong><br>
-                <strong th:if="${!isBudgetEmpty}">Remaining Budget: <span th:text="RM ${trip.budget.remainingBudget}"></span></strong><br>
+                <strong th:if="${!isBudgetEmpty}">Total Budget: </strong><span th:text="${trip.budget.totalBudget}"></span><br>
+                <strong th:if="${!isBudgetEmpty}">Remaining Budget: </strong><span th:text="${trip.budget.remainingBudget}"></span><br>
             </p>
 
             
