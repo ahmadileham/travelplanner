@@ -1,44 +1,77 @@
-<div th:replace="~{header}"></div>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Budget Planning</title>
+</head>
+<body>
+    <div th:replace="~{header}"></div>
 
-<h1>Budget Planning</h1>
-<form th:action="@{/budget/save}" method="post">
-
-    <input type="hidden" name="tripId" th:value="${tripId}">
-
-    <div class="form-group mb-3">
-        <label>Total Budget</label>
-        <input type="number" name="totalBudget" class="form-control" required step="0.01">
-    </div>
-
-    <div th:object="${expensesWrapper}">
-        <div id="expenses">
-            <div class="expense mb-3">
-                <input type="text" th:field="*{expenses[0].expenseCategory}" 
-                       class="form-control" placeholder="Category" required>
-                <input type="number" th:field="*{expenses[0].amount}" 
-                       class="form-control mt-1" placeholder="Amount" required step="0.01">
+    <div class="container mt-4">
+        <h1>Budget Planning for Trip</h1>
+        
+        <form th:action="@{/budget/save(tripId=${tripId})}" method="post">
+            <div class="form-group">
+                <label for="totalBudget">Total Budget</label>
+                <input type="number" class="form-control" id="totalBudget" 
+                       name="totalBudget" step="0.01" required>
             </div>
-        </div>
+
+            <h3 class="mt-4">Expenses</h3>
+            <div id="expenses">
+                <div class="expense-entry mb-3 card p-3">
+                    <div class="form-row">
+                        <div class="col">
+                            <input type="text" name="expenses[0].expenseCategory" 
+                                   class="form-control" placeholder="Category" required>
+                        </div>
+                        <div class="col">
+                            <input type="number" name="expenses[0].amount" 
+                                   class="form-control" placeholder="Amount" step="0.01" required>
+                        </div>
+                        <div class="col">
+                            <input type="text" name="expenses[0].remarks" 
+                                   class="form-control" placeholder="Remarks">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-secondary" onclick="addExpenseField()">
+                Add Another Expense
+            </button>
+            
+            <button type="submit" class="btn btn-primary">Save Budget</button>
+        </form>
     </div>
-    <button type="button" class="btn btn-outline-secondary" onclick="addExpenseField()">Add More Expenses</button>
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
 
-<script>
-    let expenseIndex = 1; // Start from 1 since we have index 0 initially
+    <script>
+        let expenseIndex = 1;
+        
+        function addExpenseField() {
+            const newEntry = document.createElement('div');
+            newEntry.className = 'expense-entry mb-3 card p-3';
+            newEntry.innerHTML = `
+                <div class="form-row">
+                    <div class="col">
+                        <input type="text" name="expenses[${expenseIndex}].expenseCategory" 
+                               class="form-control" placeholder="Category" required>
+                    </div>
+                    <div class="col">
+                        <input type="number" name="expenses[${expenseIndex}].amount" 
+                               class="form-control" placeholder="Amount" step="0.01" required>
+                    </div>
+                    <div class="col">
+                        <input type="text" name="expenses[${expenseIndex}].remarks" 
+                               class="form-control" placeholder="Remarks">
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('expenses').appendChild(newEntry);
+            expenseIndex++;
+        }
+    </script>
 
-    function addExpenseField() {
-        const div = document.createElement('div');
-        div.className = 'expense mb-3';
-        div.innerHTML = `
-            <input type="text" name="expenses[${expenseIndex}].expenseCategory" 
-                class="form-control" placeholder="Category" required>
-            <input type="number" name="expenses[${expenseIndex}].amount" 
-                class="form-control mt-2" placeholder="Amount" required step="0.01">
-        `;
-        document.getElementById('expenses').appendChild(div);
-        expenseIndex++;
-    }
-</script>
-
-<div th:replace="~{footer}"></div>
+    <div th:replace="~{footer}"></div>
+</body>
+</html>

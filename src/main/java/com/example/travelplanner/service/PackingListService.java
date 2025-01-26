@@ -20,8 +20,8 @@ public class PackingListService {
 
         // Associate each item with the packing list
         items.forEach(item -> {
-            item.setPackingList(packingList); // <-- KEY FIX
-            item.setPacked(false); // Set default value if needed
+            item.setPackingList(packingList); 
+            item.setPacked(false); 
         });
 
         // Save the updated list
