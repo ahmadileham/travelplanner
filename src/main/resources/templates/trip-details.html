@@ -16,25 +16,67 @@
                 <span th:text="${#dates.format(trip.startDate, 'yyyy-MM-dd')}"></span> to 
                 <span th:text="${#dates.format(trip.endDate, 'yyyy-MM-dd')}"></span>
             </p>
-            <a th:href="@{/packing/form(tripId=${trip.id})}" 
-                class="btn btn-warning"
-                th:text="${isPackingListEmpty} ? 'Add Packing List' : 'Update Packing List'">
+            <a th:if="${isPackingListEmpty}" th:href="@{/packing/form(tripId=${trip.id})}" 
+                th:class="btn btn-warning">Add Packing List
             </a>
         </div>
     </div>
 
     <!-- Collapsible Packing List -->
     <div th:if="${!isPackingListEmpty}" class="card mt-3">
-        <div class="card-header" data-toggle="collapse" href="#packingCollapse">
-            <h5>Packing List</h5>
+        <div class="card-header d-flex justify-content-between align-items-center" data-toggle="collapse" href="#packingCollapse">
+            <h5 class="mb-0">Packing List</h5>
+            <a class="btn btn-outline-primary btn-sm" th:href="@{/packing/form(tripId=${trip.id})}">
+                <i class="fas fa-plus me-1"></i> Add More Items
+            </a>
         </div>
         <div id="packingCollapse" class="collapse show">
             <div class="card-body">
                 <table class="table">
-                    <tr th:each="item : ${trip.packingList.packingItems}">
-                        <td th:text="${item.itemName}"></td>
-                        <td th:text="${item.quantity}"></td>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${trip.packingList.packingItems}">
+                            <td th:text="${item.itemName}" th:class="${item.packed} ? 'text-muted text-decoration-line-through' : ''"></td>
+                            <td th:text="${item.quantity}" th:class="${item.packed} ? 'text-muted text-decoration-line-through' : ''"></td>
+                            <td>
+                                <!-- Edit Icon -->
+                                <a th:href="@{/packing/edit/{id}(id=${item.id})}" 
+                                   class="text-primary me-2" 
+                                   title="Edit">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </a>
+                                
+                                <!-- Delete Icon -->
+                                <form th:action="@{/packing/delete/{id}(id=${item.id})}" 
+                                      method="post" 
+                                      class="d-inline">
+                                    <button type="submit" 
+                                            class="btn btn-link text-danger p-0" 
+                                            title="Delete">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+    
+                                <!-- Mark as Packed Icon -->
+                                <form th:action="@{/packing/toggle-packed/{id}(id=${item.id})}" 
+                                      method="post" 
+                                      class="d-inline ms-2">
+                                    <button type="submit" 
+                                            class="btn btn-link p-0" 
+                                            th:classappend="${item.packed} ? 'text-success' : 'text-secondary'"
+                                            th:title="${item.packed} ? 'Mark as Unpacked' : 'Mark as Packed'">
+                                        <i th:class="${item.packed} ? 'fas fa-check-circle' : 'far fa-circle'"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
