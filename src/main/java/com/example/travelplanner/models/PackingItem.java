@@ -63,5 +63,8 @@ public class PackingItem {
         this.packingList = packingList;
     }
 
+    public PackingItem() {
+    }
+
     
 }

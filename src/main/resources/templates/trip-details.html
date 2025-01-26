@@ -15,8 +15,10 @@
                 <strong>Date:</strong> 
                 <span th:text="${#dates.format(trip.startDate, 'yyyy-MM-dd')}"></span> to 
                 <span th:text="${#dates.format(trip.endDate, 'yyyy-MM-dd')}"></span><br>
-                <strong th:if="${!isBudgetEmpty}">Total Budget: </strong><span th:text="${trip.budget.totalBudget}"></span><br>
-                <strong th:if="${!isBudgetEmpty}">Remaining Budget: </strong><span th:text="${trip.budget.remainingBudget}"></span><br>
+                <div th:if="${!isBudgetEmpty}">
+                    <strong>Total Budget: </strong><span th:text="${trip.budget.totalBudget}"></span><br>
+                    <strong >Remaining Budget: </strong><span th:text="${trip.budget.remainingBudget}"></span><br>
+                </div>
             </p>
 
             
@@ -25,8 +27,24 @@
                 class="btn btn-outline-secondary">Add Packing List
             </a>
 
-            <a th:if="${isBudgetEmpty}" th:href="@{/budget/form(tripId=${trip.id})}" 
-                class="btn btn-outline-success">Add Budget
+            <!-- Budget Section -->
+            <a th:if="${isBudgetEmpty}" 
+            th:href="@{/budget/form(tripId=${trip.id})}" 
+            class="btn btn-outline-success">
+            Add Budget
+            </a>
+
+            <a th:if="${!isBudgetEmpty}" 
+            th:href="@{/budget/form(tripId=${trip.id})}" 
+            class="btn btn-outline-success">
+            Update Budget
+            </a>
+
+            <!-- Expense Section -->
+            <a th:if="${!isBudgetEmpty}" 
+            th:href="@{/budget/expense-form(tripId=${trip.id})}" 
+            class="btn btn-outline-dark"
+            th:text="${isExpenseEmpty} ? 'Add Expenses' : 'Update Expenses'">
             </a>
 
         </div>

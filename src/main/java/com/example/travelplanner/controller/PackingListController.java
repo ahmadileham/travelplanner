@@ -1,5 +1,6 @@
 package com.example.travelplanner.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,12 @@ public class PackingListController {
     // Form handling
     @GetMapping("/form")
     public String showPackingForm(@RequestParam int tripId, Model model) {
+        // Initialize with mutable ArrayList
+        List<PackingItem> initialItems = new ArrayList<>();
+        initialItems.add(new PackingItem());
+        
         model.addAttribute("tripId", tripId);
-        model.addAttribute("form", new PackingListForm(List.of(new PackingItem())));
+        model.addAttribute("form", new PackingListForm(initialItems));
         return "packinglist-form";
     }
 

@@ -6,7 +6,9 @@
 <body>
     <div th:replace="~{header}"></div>
     <h1>Packing List</h1>
-    <form th:action="@{/packing/save(tripId=${tripId})}" method="post" th:object="${packingListForm}">
+    
+    <!-- Change th:object to match controller's model attribute name -->
+    <form th:action="@{/packing/save(tripId=${tripId})}" method="post" th:object="${form}">
         <div id="items">
             <div class="item mb-3" th:each="item, stat : *{items}">
                 <input type="text" th:field="*{items[__${stat.index}__].itemName}" 
@@ -15,11 +17,16 @@
                        class="form-control" placeholder="Quantity">
             </div>
         </div>
-        <button type="button" class="btn btn-outline-secondary" onclick="addItemField()">Add Another Item</button>
+        <button type="button" class="btn btn-outline-secondary" onclick="addItemField()">
+            Add Another Item
+        </button>
         <button type="submit" class="btn btn-primary">Save All Items</button>
     </form>
+
     <script>
-        let itemIndex = [[${packingListForm.items.size()}]];
+        // Update JavaScript to use correct model attribute
+        let itemIndex = [[${form.items.size()}]];
+        
         function addItemField() {
             const div = document.createElement('div');
             div.className = 'item mb-3';

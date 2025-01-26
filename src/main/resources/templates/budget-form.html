@@ -1,76 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Budget Planning</title>
+    <title>Set Budget</title>
 </head>
 <body>
     <div th:replace="~{header}"></div>
-
+    
     <div class="container mt-4">
-        <h1>Budget Planning for Trip</h1>
-        
-        <form th:action="@{/budget/save(tripId=${tripId})}" method="post">
-            <div class="form-group">
-                <label for="totalBudget">Total Budget</label>
-                <input type="number" class="form-control" id="totalBudget" 
-                       name="totalBudget" step="0.01" required>
+        <h1>Set Trip Budget</h1>
+        <form th:action="@{/budget/set(tripId=${tripId})}" method="post">
+            <div class="mb-3">
+                <label for="totalBudget" class="form-label">Total Budget</label>
+                <input type="number" class="form-control" 
+                       id="totalBudget" name="totalBudget" 
+                       step="0.01" required>
             </div>
-
-            <h3 class="mt-4">Expenses</h3>
-            <div id="expenses">
-                <div class="expense-entry mb-3 card p-3">
-                    <div class="form-row">
-                        <div class="col">
-                            <input type="text" name="expenses[0].expenseCategory" 
-                                   class="form-control" placeholder="Category" required>
-                        </div>
-                        <div class="col">
-                            <input type="number" name="expenses[0].amount" 
-                                   class="form-control" placeholder="Amount" step="0.01" required>
-                        </div>
-                        <div class="col">
-                            <input type="text" name="expenses[0].remarks" 
-                                   class="form-control" placeholder="Remarks">
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <button type="button" class="btn btn-secondary" onclick="addExpenseField()">
-                Add Another Expense
-            </button>
-            
             <button type="submit" class="btn btn-primary">Save Budget</button>
         </form>
     </div>
-
-    <script>
-        let expenseIndex = 1;
-        
-        function addExpenseField() {
-            const newEntry = document.createElement('div');
-            newEntry.className = 'expense-entry mb-3 card p-3';
-            newEntry.innerHTML = `
-                <div class="form-row">
-                    <div class="col">
-                        <input type="text" name="expenses[${expenseIndex}].expenseCategory" 
-                               class="form-control" placeholder="Category" required>
-                    </div>
-                    <div class="col">
-                        <input type="number" name="expenses[${expenseIndex}].amount" 
-                               class="form-control" placeholder="Amount" step="0.01" required>
-                    </div>
-                    <div class="col">
-                        <input type="text" name="expenses[${expenseIndex}].remarks" 
-                               class="form-control" placeholder="Remarks">
-                    </div>
-                </div>
-            `;
-            
-            document.getElementById('expenses').appendChild(newEntry);
-            expenseIndex++;
-        }
-    </script>
 
     <div th:replace="~{footer}"></div>
 </body>

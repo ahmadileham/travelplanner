@@ -29,11 +29,13 @@ public class TripController {
         Trip trip = tripService.getTripDetails(id);
         model.addAttribute("trip", trip);
         
-        boolean isBudgetEmpty = trip.getBudget().getExpenses().isEmpty() || trip.getBudget().getTotalBudget() == 0;
+        boolean isBudgetEmpty = trip.getBudget().getTotalBudget() == 0;
+        boolean isExpenseEmpty = trip.getBudget().getExpenses().isEmpty();
         boolean isPackingListEmpty = trip.getPackingList().getPackingItems().isEmpty();
         boolean isItineraryEmpty = trip.getItinerary().getActivities().isEmpty();
         
         model.addAttribute("isBudgetEmpty", isBudgetEmpty);
+        model.addAttribute("isExpenseEmpty", isExpenseEmpty);
         model.addAttribute("isPackingListEmpty", isPackingListEmpty);
         model.addAttribute("isItineraryEmpty", isItineraryEmpty);
         
