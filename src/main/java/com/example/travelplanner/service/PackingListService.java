@@ -15,7 +15,16 @@ public class PackingListService {
     private PackingListRepository packingListRepository;
 
     public void addPackingItems(int tripId, List<PackingItem> items) {
+        // Get the existing packing list for the trip
         PackingList packingList = packingListRepository.findByTripId(tripId);
+
+        // Associate each item with the packing list
+        items.forEach(item -> {
+            item.setPackingList(packingList); // <-- KEY FIX
+            item.setPacked(false); // Set default value if needed
+        });
+
+        // Save the updated list
         packingList.getPackingItems().addAll(items);
         packingListRepository.save(packingList);
     }

@@ -5,21 +5,41 @@
 </head>
 <body>
     <div th:replace="~{header}"></div>
+
     <h1>Trip Details</h1>
     <div class="card">
         <div class="card-body">
             <h5 class="card-title" th:text="${trip.tripName}"></h5>
             <p class="card-text">
                 <strong>Destination:</strong> <span th:text="${trip.destination}"></span><br>
-                <strong>Dates:</strong> 
+                <strong>Date:</strong> 
                 <span th:text="${#dates.format(trip.startDate, 'yyyy-MM-dd')}"></span> to 
                 <span th:text="${#dates.format(trip.endDate, 'yyyy-MM-dd')}"></span>
             </p>
-            <a th:href="@{/trips/{id}/packing(id=${trip.id})}" class="btn btn-warning">Packing List</a>
-            <a th:href="@{/trips/{id}/itinerary(id=${trip.id})}" class="btn btn-success">Itinerary</a>
-            <a th:href="@{/trips/{id}/budget(id=${trip.id})}" class="btn btn-primary">Budget</a>
+            <a th:href="@{/packing/form(tripId=${trip.id})}" 
+                class="btn btn-warning"
+                th:text="${isPackingListEmpty} ? 'Add Packing List' : 'Update Packing List'">
+            </a>
         </div>
     </div>
+
+    <!-- Collapsible Packing List -->
+    <div th:if="${!isPackingListEmpty}" class="card mt-3">
+        <div class="card-header" data-toggle="collapse" href="#packingCollapse">
+            <h5>Packing List</h5>
+        </div>
+        <div id="packingCollapse" class="collapse show">
+            <div class="card-body">
+                <table class="table">
+                    <tr th:each="item : ${trip.packingList.packingItems}">
+                        <td th:text="${item.itemName}"></td>
+                        <td th:text="${item.quantity}"></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <div th:replace="~{footer}"></div>
 </body>
 </html>
