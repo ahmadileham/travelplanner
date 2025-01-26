@@ -1,37 +1,44 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Budget</title>
-</head>
-<body>
-    <div th:replace="~{header}"></div>
-    <h1>Budget</h1>
-    <form th:action="@{/trips/{tripId}/budget/expenses(tripId=${tripId})}" th:object="${expense}" method="post">
-        <div class="mb-3">
-            <label for="expenseCategory" class="form-label">Category</label>
-            <input type="text" class="form-control" id="expenseCategory" th:field="*{expenseCategory}" required>
+<div th:replace="~{header}"></div>
+
+<h1>Budget Planning</h1>
+<form th:action="@{/budget/save}" method="post">
+
+    <input type="hidden" name="tripId" th:value="${tripId}">
+
+    <div class="form-group mb-3">
+        <label>Total Budget</label>
+        <input type="number" name="totalBudget" class="form-control" required step="0.01">
+    </div>
+
+    <div th:object="${expensesWrapper}">
+        <div id="expenses">
+            <div class="expense mb-3">
+                <input type="text" th:field="*{expenses[0].expenseCategory}" 
+                       class="form-control" placeholder="Category" required>
+                <input type="number" th:field="*{expenses[0].amount}" 
+                       class="form-control mt-1" placeholder="Amount" required step="0.01">
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="amount" class="form-label">Amount</label>
-            <input type="number" step="0.01" class="form-control" id="amount" th:field="*{amount}" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Add Expense</button>
-    </form>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Category</th>
-                <th>Amount</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="expense : ${expenses}">
-                <td th:text="${expense.expenseCategory}"></td>
-                <td th:text="${expense.amount}"></td>
-            </tr>
-        </tbody>
-    </table>
-    <a th:href="@{/trips/{tripId}/budget/analysis(tripId=${tripId})}" class="btn btn-info">View Expense Breakdown</a>
-    <div th:replace="~{footer}"></div>
-</body>
-</html>
+    </div>
+    <button type="button" class="btn btn-outline-secondary" onclick="addExpenseField()">Add More Expenses</button>
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+
+<script>
+    let expenseIndex = 1; // Start from 1 since we have index 0 initially
+
+    function addExpenseField() {
+        const div = document.createElement('div');
+        div.className = 'expense mb-3';
+        div.innerHTML = `
+            <input type="text" name="expenses[${expenseIndex}].expenseCategory" 
+                class="form-control" placeholder="Category" required>
+            <input type="number" name="expenses[${expenseIndex}].amount" 
+                class="form-control mt-2" placeholder="Amount" required step="0.01">
+        `;
+        document.getElementById('expenses').appendChild(div);
+        expenseIndex++;
+    }
+</script>
+
+<div th:replace="~{footer}"></div>
