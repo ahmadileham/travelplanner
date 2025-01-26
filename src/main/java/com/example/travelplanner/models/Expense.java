@@ -55,6 +55,14 @@ public class Expense {
         this.remarks = remarks;
     }
 
+    public Budget getBudget() {
+        return budget;
+    }
+
+    public void setBudget(Budget budget) {
+        this.budget = budget;
+    }
+
     
 
 

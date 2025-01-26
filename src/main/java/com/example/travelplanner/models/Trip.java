@@ -24,6 +24,15 @@ public class Trip {
     @Column(nullable = false)
     private Date endDate;
 
+    @OneToOne(mappedBy = "trip", cascade = CascadeType.ALL)
+    private Itinerary itinerary;
+
+    @OneToOne(mappedBy = "trip", cascade = CascadeType.ALL)
+    private Budget budget;
+
+    @OneToOne(mappedBy = "trip", cascade = CascadeType.ALL)
+    private PackingList packingList;
+
     public int getId() {
         return id;
     }
@@ -62,6 +71,30 @@ public class Trip {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public Itinerary getItinerary() {
+        return itinerary;
+    }
+
+    public void setItinerary(Itinerary itinerary) {
+        this.itinerary = itinerary;
+    }
+
+    public Budget getBudget() {
+        return budget;
+    }
+
+    public void setBudget(Budget budget) {
+        this.budget = budget;
+    }
+
+    public PackingList getPackingList() {
+        return packingList;
+    }
+
+    public void setPackingList(PackingList packingList) {
+        this.packingList = packingList;
     }
 
 }
