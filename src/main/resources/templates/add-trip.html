@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Trip</title>
+</head>
+<body>
+    <div th:replace="~{header}"></div>
+    <div class="container-sm mt-5">
+        <h1 class="text-center mb-4">Create New Trip</h1>
+        <form th:action="@{/trips/add}" th:object="${trip}" method="post" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="tripName" class="form-label">Trip Name:</label>
+                <input type="text" id="tripName" name="tripName" class="form-control" required>
+                <div class="invalid-feedback">Please provide a trip name.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="destination" class="form-label">Destination:</label>
+                <input type="text" id="destination" name="destination" class="form-control" required>
+                <div class="invalid-feedback">Please provide a destination.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="startDate" class="form-label">Start Date:</label>
+                <input type="date" id="startDate" name="startDate" class="form-control" required>
+                <div class="invalid-feedback">Please select a start date.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="endDate" class="form-label">End Date:</label>
+                <input type="date" id="endDate" name="endDate" class="form-control" required>
+                <div class="invalid-feedback">Please select an end date.</div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Add Trip</button>
+        </form>
+    </div>
+    <div th:replace="~{footer}"></div>
+</body>
+</html>

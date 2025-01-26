@@ -12,8 +12,8 @@
             <p class="card-text">
                 <strong>Destination:</strong> <span th:text="${trip.destination}"></span><br>
                 <strong>Dates:</strong> 
-                <span th:text="${#temporals.format(trip.startDate, 'yyyy-MM-dd')}"></span> to 
-                <span th:text="${#temporals.format(trip.endDate, 'yyyy-MM-dd')}"></span>
+                <span th:text="${#dates.format(trip.startDate, 'yyyy-MM-dd')}"></span> to 
+                <span th:text="${#dates.format(trip.endDate, 'yyyy-MM-dd')}"></span>
             </p>
             <a th:href="@{/trips/{id}/packing(id=${trip.id})}" class="btn btn-warning">Packing List</a>
             <a th:href="@{/trips/{id}/itinerary(id=${trip.id})}" class="btn btn-success">Itinerary</a>

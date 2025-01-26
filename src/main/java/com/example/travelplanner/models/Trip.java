@@ -2,6 +2,8 @@ package com.example.travelplanner.models;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -19,9 +21,11 @@ public class Trip {
     private String destination;
 
     @Column(nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate; 
     
     @Column(nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 
     @OneToOne(mappedBy = "trip", cascade = CascadeType.ALL)
