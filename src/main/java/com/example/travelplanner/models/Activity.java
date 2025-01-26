@@ -1,6 +1,12 @@
 package com.example.travelplanner.models;
+import java.util.Comparator;
 import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 
 import jakarta.persistence.*;
 
@@ -17,6 +23,7 @@ public class Activity {
     @Column(nullable = false)
     private String destination;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false)
     private Date activityDate; 
     
@@ -74,6 +81,18 @@ public class Activity {
     public void setItinerary(Itinerary itinerary) {
         this.itinerary = itinerary;
     }
+
+    public static Comparator<Activity> compareByDateTime = (a1, a2) -> {
+        LocalDateTime dt1 = LocalDateTime.of(
+            a1.getActivityDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+            a1.getActivityTime()
+        );
+        LocalDateTime dt2 = LocalDateTime.of(
+            a2.getActivityDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+            a2.getActivityTime()
+        );
+        return dt1.compareTo(dt2);
+    };
 
     
 }
