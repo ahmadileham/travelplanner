@@ -16,7 +16,6 @@ import com.example.travelplanner.models.Budget;
 import com.example.travelplanner.models.Expense;
 import com.example.travelplanner.repository.BudgetRepository;
 import com.example.travelplanner.repository.ExpenseRepository;
-import org.modelmapper.ModelMapper;
 
 import jakarta.transaction.Transactional;
 

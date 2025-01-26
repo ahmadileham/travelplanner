@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Trip</title>
+</head>
+<body>
+    <div th:replace="~{header}"></div>
+    <h1>Create New Trip</h1>
+    <form th:action="@{/trips}" th:object="${trip}" method="post">
+        <div class="mb-3">
+            <label for="tripName" class="form-label">Trip Name</label>
+            <input type="text" class="form-control" id="tripName" th:field="*{tripName}" required>
+        </div>
+        <div class="mb-3">
+            <label for="destination" class="form-label">Destination</label>
+            <input type="text" class="form-control" id="destination" th:field="*{destination}" required>
+        </div>
+        <div class="mb-3">
+            <label for="startDate" class="form-label">Start Date</label>
+            <input type="date" class="form-control" id="startDate" th:field="*{startDate}" required>
+        </div>
+        <div class="mb-3">
+            <label for="endDate" class="form-label">End Date</label>
+            <input type="date" class="form-control" id="endDate" th:field="*{endDate}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+    <div th:replace="~{footer}"></div>
+</body>
+</html>

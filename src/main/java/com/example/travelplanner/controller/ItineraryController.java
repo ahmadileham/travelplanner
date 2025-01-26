@@ -7,12 +7,13 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
-@RestController
-@RequestMapping("/api/itineraries")
+@Controller
+@RequestMapping("/trips/{tripId}/itinerary")
 public class ItineraryController {
 
     private final ItineraryService itineraryService;
@@ -21,16 +22,23 @@ public class ItineraryController {
         this.itineraryService = itineraryService;
     }
 
-    @PostMapping("/{itineraryId}/activities")
-    public ResponseEntity<ActivityResponseDTO> addActivity(
-            @PathVariable int itineraryId,
-            @Valid @RequestBody ActivityDTO activityDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(itineraryService.addActivity(itineraryId, activityDTO));
+    // Show Itinerary Form
+    @GetMapping
+    public String showItineraryForm(@PathVariable int tripId, Model model) {
+        List<ActivityResponseDTO> activities = itineraryService.getActivitiesByItinerary(tripId);
+        model.addAttribute("tripId", tripId);
+        model.addAttribute("activities", activities);
+        model.addAttribute("activity", new ActivityDTO());
+        return "itinerary-form";
     }
 
-    @GetMapping("/{itineraryId}/activities")
-    public ResponseEntity<List<ActivityResponseDTO>> getActivities(@PathVariable int itineraryId) {
-        return ResponseEntity.ok(itineraryService.getActivitiesByItinerary(itineraryId));
+    // Handle Add Activity Form Submission
+    @PostMapping("/activities")
+    public String addActivity(@PathVariable int tripId, @ModelAttribute("activity") @Valid ActivityDTO activityDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            return "itinerary-form";
+        }
+        itineraryService.addActivity(tripId, activityDTO);
+        return "redirect:/trips/" + tripId + "/itinerary";
     }
 }

@@ -13,7 +13,6 @@ import com.example.travelplanner.models.PackingItem;
 import com.example.travelplanner.repository.PackingItemRepository;
 import com.example.travelplanner.repository.PackingListRepository;
 import com.example.travelplanner.repository.TripRepository;
-import org.modelmapper.ModelMapper;
 
 import jakarta.transaction.Transactional;
 

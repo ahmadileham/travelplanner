@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Packing List</title>
+</head>
+<body>
+    <div th:replace="~{header}"></div>
+    <h1>Packing List</h1>
+    <form th:action="@{/trips/{tripId}/packing/items(tripId=${tripId})}" th:object="${item}" method="post">
+        <div class="mb-3">
+            <label for="itemName" class="form-label">Item Name</label>
+            <input type="text" class="form-control" id="itemName" th:field="*{itemName}" required>
+        </div>
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity</label>
+            <input type="number" class="form-control" id="quantity" th:field="*{quantity}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Item</button>
+    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${items}">
+                <td th:text="${item.itemName}"></td>
+                <td th:text="${item.quantity}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div th:replace="~{footer}"></div>
+</body>
+</html>

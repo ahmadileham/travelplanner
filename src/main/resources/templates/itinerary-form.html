@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Itinerary</title>
+</head>
+<body>
+    <div th:replace="~{header}"></div>
+    <h1>Itinerary</h1>
+    <form th:action="@{/trips/{tripId}/itinerary/activities(tripId=${tripId})}" th:object="${activity}" method="post">
+        <div class="mb-3">
+            <label for="activityName" class="form-label">Activity Name</label>
+            <input type="text" class="form-control" id="activityName" th:field="*{activityName}" required>
+        </div>
+        <div class="mb-3">
+            <label for="activityDate" class="form-label">Date</label>
+            <input type="date" class="form-control" id="activityDate" th:field="*{activityDate}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Activity</button>
+    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Activity Name</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="activity : ${activities}">
+                <td th:text="${activity.activityName}"></td>
+                <td th:text="${#temporals.format(activity.activityDate, 'yyyy-MM-dd')}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div th:replace="~{footer}"></div>
+</body>
+</html>

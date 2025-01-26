@@ -5,15 +5,16 @@ import com.example.travelplanner.dto.ExpenseDTO;
 import com.example.travelplanner.dto.ExpenseResponseDTO;
 import com.example.travelplanner.service.BudgetService;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 
-import java.math.BigDecimal;
+
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/budgets")
+@Controller
+@RequestMapping("/trips/{tripId}/budget")
 public class BudgetController {
 
     private final BudgetService budgetService;
@@ -22,31 +23,34 @@ public class BudgetController {
         this.budgetService = budgetService;
     }
 
-    @PostMapping("/{budgetId}/expenses")
-    public ResponseEntity<ExpenseResponseDTO> addExpense(
-            @PathVariable int budgetId,
-            @Valid @RequestBody ExpenseDTO expenseDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(budgetService.addExpense(budgetId, expenseDTO));
+    // Show Budget Form
+    @GetMapping
+    public String showBudgetForm(@PathVariable int tripId, Model model) {
+        BudgetAnalysisDTO analysis = budgetService.analyzeBudget(tripId);
+        List<ExpenseResponseDTO> expenses = budgetService.getExpensesByBudget(tripId);
+        model.addAttribute("tripId", tripId);
+        model.addAttribute("analysis", analysis);
+        model.addAttribute("expenses", expenses);
+        model.addAttribute("expense", new ExpenseDTO());
+        return "budget-form";
     }
 
-    @GetMapping("/{budgetId}/analysis")
-    public ResponseEntity<BudgetAnalysisDTO> analyzeBudget(@PathVariable int budgetId) {
-        return ResponseEntity.ok(budgetService.analyzeBudget(budgetId));
+    // Handle Add Expense Form Submission
+    @PostMapping("/expenses")
+    public String addExpense(@PathVariable int tripId, @ModelAttribute("expense") @Valid ExpenseDTO expenseDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            return "budget-form";
+        }
+        budgetService.addExpense(tripId, expenseDTO);
+        return "redirect:/trips/" + tripId + "/budget";
     }
 
-
-    @PutMapping("/{budgetId}/set-budget")
-    public ResponseEntity<Void> setBudget(
-            @PathVariable int budgetId,
-            @RequestParam BigDecimal amount,
-            @RequestParam String currency) {
-        budgetService.setBudget(budgetId, amount, currency);
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/{budgetId}/expenses")
-    public ResponseEntity<List<ExpenseResponseDTO>> getExpenses(@PathVariable int budgetId) {
-        return ResponseEntity.ok(budgetService.getExpensesByBudget(budgetId));
+    // Show Expense Breakdown
+    @GetMapping("/analysis")
+    public String showExpenseBreakdown(@PathVariable int tripId, Model model) {
+        BudgetAnalysisDTO analysis = budgetService.analyzeBudget(tripId);
+        model.addAttribute("tripId", tripId);
+        model.addAttribute("analysis", analysis);
+        return "budget-analysis";
     }
 }
