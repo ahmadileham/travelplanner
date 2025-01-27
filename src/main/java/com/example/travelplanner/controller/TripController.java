@@ -54,6 +54,7 @@ public class TripController {
         } catch (Exception e) {
             model.addAttribute("errorMessage", "An unexpected error occurred.");
         }
+        model.addAttribute("trip", new Trip());
         return "add-trip";
     }
 
@@ -86,6 +87,7 @@ public class TripController {
         } catch (Exception e) {
             model.addAttribute("errorMessage", "An unexpected error occurred.");
         }
+        model.addAttribute("trip", tripService.getTripDetails(id));
         return "edit-trip";
     }
 

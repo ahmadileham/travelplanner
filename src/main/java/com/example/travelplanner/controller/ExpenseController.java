@@ -40,6 +40,7 @@ public class ExpenseController {
         } catch (Exception e) {
             model.addAttribute("errorMessage", "An unexpected error occurred.");
         }
+        model.addAttribute("expense", expenseService.getExpenseById(id));
         return "edit-expense";
     }
 

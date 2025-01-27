@@ -49,7 +49,7 @@ public class ItineraryController {
         } catch (Exception e) {
             model.addAttribute("errorMessage", "An unexpected error occurred.");
         }
-
+        model.addAttribute("activity", itineraryService.getActivityById(id));
         return "edit-activity";
     }
 
@@ -90,6 +90,11 @@ public class ItineraryController {
         } catch (Exception e) {
             model.addAttribute("errorMessage", "An unexpected error occurred.");
         }
+        Trip trip = tripService.getTripDetails(tripId);
+        model.addAttribute("tripId", tripId);
+        model.addAttribute("activityDTO", new ActivityDTO());
+        model.addAttribute("tripStart", trip.getStartDate());
+        model.addAttribute("tripEnd", trip.getEndDate());
         return "itinerary-form";
     }
 }

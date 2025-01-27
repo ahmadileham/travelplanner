@@ -50,6 +50,7 @@ public class BudgetController {
         } catch (Exception e) {
             model.addAttribute("errorMessage", "An unexpected error occurred.");
         }
+        model.addAttribute("tripId", tripId);
         return "budget-form";
     }
 
@@ -68,6 +69,8 @@ public class BudgetController {
         } catch (Exception e) {
             model.addAttribute("errorMessage", "An unexpected error occurred.");
         }
+        model.addAttribute("tripId", tripId);
+        model.addAttribute("expenses", new ArrayList<Expense>());
         return "expense-form";
     }
 }

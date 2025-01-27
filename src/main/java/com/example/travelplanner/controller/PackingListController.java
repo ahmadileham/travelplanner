@@ -50,6 +50,11 @@ public class PackingListController {
         } catch (Exception e) {
             model.addAttribute("errorMessage", "An unexpected error occurred.");
         }
+        List<PackingItem> initialItems = new ArrayList<>();
+        initialItems.add(new PackingItem());
+        
+        model.addAttribute("tripId", tripId);
+        model.addAttribute("form", new PackingListForm(initialItems));
         return "packinglist-form";
     }
 
@@ -72,6 +77,7 @@ public class PackingListController {
         } catch (Exception e) {
             model.addAttribute("errorMessage", "An unexpected error occurred.");
         }
+        model.addAttribute("item", packingListService.getItemById(id));
         return "edit-packing-item";
     }
 
