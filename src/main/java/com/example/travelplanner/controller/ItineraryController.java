@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.travelplanner.dto.ActivityDTO;
 import com.example.travelplanner.models.Activity;
@@ -36,10 +37,11 @@ public class ItineraryController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateActivity(@PathVariable int id, @ModelAttribute Activity activity, Model model) {
+    public String updateActivity(@PathVariable int id, @ModelAttribute Activity activity, Model model, RedirectAttributes redirectAttributes) {
 
         try {
             itineraryService.updateActivity(activity);
+            redirectAttributes.addFlashAttribute("successMessage", "Activity updated.");
         return "redirect:/trips/" + itineraryService.getActivityById(id)
             .getItinerary().getTrip().getId();
         } catch (IllegalArgumentException e) {
@@ -76,11 +78,12 @@ public class ItineraryController {
     public String saveItinerary(
         @RequestParam int tripId,
         @ModelAttribute("activityDTO") ActivityDTO activityDTO,
-        Model model
+        Model model, RedirectAttributes redirectAttributes
     ) {
 
         try {
             itineraryService.addActivities(tripId, activityDTO.getActivities());
+            redirectAttributes.addFlashAttribute("successMessage", "Activity added.");
             return "redirect:/trips/" + tripId;
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());

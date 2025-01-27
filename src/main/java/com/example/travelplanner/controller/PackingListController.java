@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.travelplanner.service.PackingListService;
 import com.example.travelplanner.models.*;
@@ -37,12 +38,12 @@ public class PackingListController {
     @PostMapping("/save")
     public String savePackingItems(
         @RequestParam int tripId,
-        @ModelAttribute("form") PackingListForm form, Model model
+        @ModelAttribute("form") PackingListForm form, Model model, RedirectAttributes redirectAttributes
     ) {
         
         try {
             packingListService.addPackingItems(tripId, form.getItems());
-            model.addAttribute("successMessage", "Packing items added successfully!");
+            redirectAttributes.addFlashAttribute("successMessage", "Packing items added successfully!");
             return "redirect:/trips/" + tripId;
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
@@ -60,11 +61,11 @@ public class PackingListController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateItem(@PathVariable int id, @ModelAttribute PackingItem item, Model model) {
+    public String updateItem(@PathVariable int id, @ModelAttribute PackingItem item, Model model, RedirectAttributes redirectAttributes) {
         
         try {
             packingListService.updateItem(id, item);
-            model.addAttribute("successMessage", "Packing items added successfully!");
+            redirectAttributes.addFlashAttribute("successMessage", "Packing items added successfully!");
             return "redirect:/trips/" + packingListService.getItemById(id).getPackingList().getTrip().getId();
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.travelplanner.models.Expense;
 import com.example.travelplanner.service.ExpenseService;
@@ -28,11 +29,11 @@ public class ExpenseController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateExpense(@PathVariable int id, @ModelAttribute Expense expense, Model model) {
+    public String updateExpense(@PathVariable int id, @ModelAttribute Expense expense, Model model, RedirectAttributes redirectAttributes) {
         
         try {
             expenseService.updateExpense(id, expense);
-            model.addAttribute("successMessage", "Budget set successfully!");
+            redirectAttributes.addFlashAttribute("successMessage", "Budget set successfully!");
             return "redirect:/trips/" + expenseService.getExpenseById(id).getBudget().getTrip().getId();
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());

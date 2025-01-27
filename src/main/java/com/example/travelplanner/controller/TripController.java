@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.travelplanner.models.Trip;
 import com.example.travelplanner.service.TripService;
@@ -43,10 +44,10 @@ public class TripController {
     }
 
     @PostMapping("/add")
-    public String createTrip(@ModelAttribute Trip trip, Model model) {
+    public String createTrip(@ModelAttribute Trip trip, Model model, RedirectAttributes redirectAttributes) {
         try {
             tripService.createTrip(trip);
-            model.addAttribute("successMessage", "Trip created successfully!");
+            redirectAttributes.addFlashAttribute("successMessage", "Trip created successfully!");
             return "redirect:/trips";
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
@@ -75,10 +76,10 @@ public class TripController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateTrip(@PathVariable int id, @ModelAttribute Trip trip, Model model) {
+    public String updateTrip(@PathVariable int id, @ModelAttribute Trip trip, Model model, RedirectAttributes redirectAttributes) {
         try {
             tripService.updateTrip(id, trip);
-            model.addAttribute("successMessage", "Trip created successfully!");
+            redirectAttributes.addFlashAttribute("successMessage", "Trip created successfully!");
             return "redirect:/trips/" + id;
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());

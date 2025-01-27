@@ -5,7 +5,9 @@
 </head>
 <body>
     <div th:replace="~{header}"></div>
-
+    <div th:if="${successMessage}" class="alert alert-success">
+        <p th:text="${successMessage}"></p>
+    </div>
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Trip Details</h1>
         <div>
