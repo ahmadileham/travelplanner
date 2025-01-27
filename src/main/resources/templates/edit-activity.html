@@ -12,6 +12,9 @@
         <form th:action="@{/itinerary/update/{id}(id=${activity.id})}" 
               th:object="${activity}" 
               method="post">
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <p th:text="${errorMessage}"></p>
+            </div>
             <div class="mb-3">
                 <label class="form-label">Activity Name</label>
                 <input type="text" class="form-control" th:field="*{activityName}" required>

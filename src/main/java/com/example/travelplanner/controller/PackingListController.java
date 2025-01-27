@@ -37,10 +37,19 @@ public class PackingListController {
     @PostMapping("/save")
     public String savePackingItems(
         @RequestParam int tripId,
-        @ModelAttribute("form") PackingListForm form
+        @ModelAttribute("form") PackingListForm form, Model model
     ) {
-        packingListService.addPackingItems(tripId, form.getItems());
-        return "redirect:/trips/" + tripId;
+        
+        try {
+            packingListService.addPackingItems(tripId, form.getItems());
+            model.addAttribute("successMessage", "Packing items added successfully!");
+            return "redirect:/trips/" + tripId;
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An unexpected error occurred.");
+        }
+        return "packinglist-form";
     }
 
     // Item operations
@@ -51,9 +60,18 @@ public class PackingListController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateItem(@PathVariable int id, @ModelAttribute PackingItem item) {
-        packingListService.updateItem(id, item);
-        return "redirect:/trips/" + packingListService.getItemById(id).getPackingList().getTrip().getId();
+    public String updateItem(@PathVariable int id, @ModelAttribute PackingItem item, Model model) {
+        
+        try {
+            packingListService.updateItem(id, item);
+            model.addAttribute("successMessage", "Packing items added successfully!");
+            return "redirect:/trips/" + packingListService.getItemById(id).getPackingList().getTrip().getId();
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An unexpected error occurred.");
+        }
+        return "edit-packing-item";
     }
 
     @PostMapping("/delete/{id}")

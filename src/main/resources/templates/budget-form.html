@@ -9,6 +9,9 @@
     <div class="container mt-4">
         <h1>Set Trip Budget</h1>
         <form th:action="@{/budget/set(tripId=${tripId})}" method="post">
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <p th:text="${errorMessage}"></p>
+            </div>
             <div class="mb-3">
                 <label for="totalBudget" class="form-label">Total Budget</label>
                 <input type="number" class="form-control" 

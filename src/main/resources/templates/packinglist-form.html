@@ -7,8 +7,11 @@
     <div th:replace="~{header}"></div>
     <h1>Packing List</h1>
     
-    <!-- Change th:object to match controller's model attribute name -->
+  
     <form th:action="@{/packing/save(tripId=${tripId})}" method="post" th:object="${form}">
+        <div th:if="${errorMessage}" class="alert alert-danger">
+            <p th:text="${errorMessage}"></p>
+        </div>
         <div id="items">
             <div class="item mb-3" th:each="item, stat : *{items}">
                 <input type="text" th:field="*{items[__${stat.index}__].itemName}" 

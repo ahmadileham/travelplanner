@@ -43,9 +43,17 @@ public class TripController {
     }
 
     @PostMapping("/add")
-    public String createTrip(@ModelAttribute Trip trip) {
-        tripService.createTrip(trip);
-        return "redirect:/trips";
+    public String createTrip(@ModelAttribute Trip trip, Model model) {
+        try {
+            tripService.createTrip(trip);
+            model.addAttribute("successMessage", "Trip created successfully!");
+            return "redirect:/trips";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An unexpected error occurred.");
+        }
+        return "add-trip";
     }
 
     @GetMapping("/add-form")
@@ -67,9 +75,17 @@ public class TripController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateTrip(@PathVariable int id, @ModelAttribute Trip trip) {
-        tripService.updateTrip(id, trip);
-        return "redirect:/trips/" + id;
+    public String updateTrip(@PathVariable int id, @ModelAttribute Trip trip, Model model) {
+        try {
+            tripService.updateTrip(id, trip);
+            model.addAttribute("successMessage", "Trip created successfully!");
+            return "redirect:/trips/" + id;
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An unexpected error occurred.");
+        }
+        return "edit-trip";
     }
 
 }

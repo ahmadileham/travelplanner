@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.travelplanner.dto.ActivityDTO;
 import com.example.travelplanner.models.Activity;
@@ -37,10 +36,19 @@ public class ItineraryController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateActivity(@PathVariable int id, @ModelAttribute Activity activity) {
-        itineraryService.updateActivity(activity);
+    public String updateActivity(@PathVariable int id, @ModelAttribute Activity activity, Model model) {
+
+        try {
+            itineraryService.updateActivity(activity);
         return "redirect:/trips/" + itineraryService.getActivityById(id)
             .getItinerary().getTrip().getId();
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An unexpected error occurred.");
+        }
+
+        return "edit-activity";
     }
 
     @PostMapping("/delete/{id}")
@@ -68,14 +76,17 @@ public class ItineraryController {
     public String saveItinerary(
         @RequestParam int tripId,
         @ModelAttribute("activityDTO") ActivityDTO activityDTO,
-        RedirectAttributes redirectAttributes
+        Model model
     ) {
+
         try {
             itineraryService.addActivities(tripId, activityDTO.getActivities());
+            return "redirect:/trips/" + tripId;
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/itinerary/form?tripId=" + tripId;
+            model.addAttribute("errorMessage", "An unexpected error occurred.");
         }
-        return "redirect:/trips/" + tripId;
+        return "itinerary-form";
     }
 }

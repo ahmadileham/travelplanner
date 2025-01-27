@@ -21,15 +21,14 @@ public class PackingListService {
     public void addPackingItems(int tripId, List<PackingItem> items) {
         PackingList packingList = packingListRepository.findByTripId(tripId);
         items.forEach(item -> {
+            if (item.getQuantity() < 0) {
+                throw new IllegalArgumentException("Quantity cannot be less than 0 for item: " + item.getItemName());
+            }
             item.setPackingList(packingList);
             item.setPacked(false);
         });
         packingList.getPackingItems().addAll(items);
         packingListRepository.save(packingList);
-    }
-
-    public List<PackingItem> loadFromPreviousTrip(int previousTripId) {
-        return packingListRepository.findByTripId(previousTripId).getPackingItems();
     }
 
     public PackingItem getItemById(int itemId) {
@@ -38,6 +37,9 @@ public class PackingListService {
     }
 
     public void updateItem(int itemId, PackingItem updatedItem) {
+        if (updatedItem.getQuantity() < 0) {
+            throw new IllegalArgumentException("Quantity cannot be less than 0 for item: " + updatedItem.getItemName());
+        }
         PackingItem item = getItemById(itemId);
         item.setItemName(updatedItem.getItemName());
         item.setQuantity(updatedItem.getQuantity());

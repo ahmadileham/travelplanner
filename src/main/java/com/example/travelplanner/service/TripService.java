@@ -37,6 +37,11 @@ public class TripService {
     }
 
     public Trip createTrip(Trip trip) {
+
+        if (trip.getEndDate().before(trip.getStartDate())) {
+            throw new IllegalArgumentException("End date cannot be before the start date.");
+        }
+        
         Trip savedTrip = tripRepository.save(trip);
 
         // Initialize Budget
@@ -68,6 +73,11 @@ public class TripService {
 
     @Transactional
     public void updateTrip(int tripId, Trip updatedTrip) {
+
+        if (updatedTrip.getEndDate().before(updatedTrip.getStartDate())) {
+            throw new IllegalArgumentException("End date cannot be before the start date.");
+        }
+
         Trip existingTrip = tripRepository.findById(tripId)
             .orElseThrow(() -> new RuntimeException("Trip not found"));
         

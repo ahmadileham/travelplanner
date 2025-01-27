@@ -25,6 +25,9 @@ public class ExpenseService {
     }
 
     public void updateExpense(int expenseId, Expense updatedExpense) {
+        if (updatedExpense.getAmount() < 0) {
+            throw new IllegalArgumentException("Expense amount cannot be less than 0 for: " + updatedExpense.getExpenseCategory());
+        }
         Expense existingExpense = getExpenseById(expenseId);
         Budget budget = existingExpense.getBudget();
         

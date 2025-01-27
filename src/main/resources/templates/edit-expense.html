@@ -9,6 +9,9 @@
     <div class="container mt-4">
         <h1>Edit Expense</h1>
         <form th:action="@{/expenses/update/{id}(id=${expense.id})}" method="post" th:object="${expense}">
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <p th:text="${errorMessage}"></p>
+            </div>
             <div class="mb-3">
                 <label for="expenseCategory" class="form-label">Category</label>
                 <input type="text" class="form-control" id="expenseCategory" 

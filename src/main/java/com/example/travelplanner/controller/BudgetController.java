@@ -37,18 +37,36 @@ public class BudgetController {
     @PostMapping("/set")
     public String setTripBudget(
         @RequestParam int tripId,
-        @RequestParam double totalBudget
+        @RequestParam double totalBudget, Model model
     ) {
-        budgetService.setTripBudget(tripId, totalBudget);
-        return "redirect:/trips/" + tripId;
+        
+        try {
+            budgetService.setTripBudget(tripId, totalBudget);
+            model.addAttribute("successMessage", "Budget set successfully!");
+            return "redirect:/trips/" + tripId;
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An unexpected error occurred.");
+        }
+        return "budget-form";
     }
 
     @PostMapping("/add-expense")
     public String addExpenses(
         @RequestParam int tripId,
-        @ModelAttribute("expenses") ExpenseDTO expenses
+        @ModelAttribute("expenses") ExpenseDTO expenses, Model model
     ) {
-        budgetService.addExpenses(tripId, expenses.getExpenses());
-        return "redirect:/trips/" + tripId;
+        
+        try {
+            budgetService.addExpenses(tripId, expenses.getExpenses());
+            model.addAttribute("successMessage", "Expenses added successfully!");
+            return "redirect:/trips/" + tripId;
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An unexpected error occurred.");
+        }
+        return "expense-form";
     }
 }

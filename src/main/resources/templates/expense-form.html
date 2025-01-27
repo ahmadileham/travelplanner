@@ -9,6 +9,9 @@
     <div class="container mt-4">
         <h1>Add Expenses</h1>
         <form th:action="@{/budget/add-expense(tripId=${tripId})}" method="post">
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <p th:text="${errorMessage}"></p>
+            </div>
             <div id="expenses">
                 <div class="expense mb-3">
                     <div class="row g-3">

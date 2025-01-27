@@ -8,6 +8,11 @@
     <div class="container-sm mt-5">
         <h1 class="text-center mb-4">Create New Trip</h1>
         <form th:action="@{/trips/add}" th:object="${trip}" method="post" class="needs-validation" novalidate>
+
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <p th:text="${errorMessage}"></p>
+            </div>
+            
             <div class="mb-3">
                 <label for="tripName" class="form-label">Trip Name:</label>
                 <input type="text" id="tripName" name="tripName" class="form-control" required>

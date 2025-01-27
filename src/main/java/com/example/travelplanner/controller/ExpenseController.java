@@ -28,9 +28,18 @@ public class ExpenseController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateExpense(@PathVariable int id, @ModelAttribute Expense expense) {
-        expenseService.updateExpense(id, expense);
-        return "redirect:/trips/" + expenseService.getExpenseById(id).getBudget().getTrip().getId();
+    public String updateExpense(@PathVariable int id, @ModelAttribute Expense expense, Model model) {
+        
+        try {
+            expenseService.updateExpense(id, expense);
+            model.addAttribute("successMessage", "Budget set successfully!");
+            return "redirect:/trips/" + expenseService.getExpenseById(id).getBudget().getTrip().getId();
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "An unexpected error occurred.");
+        }
+        return "edit-expense";
     }
 
     @PostMapping("/delete/{id}")

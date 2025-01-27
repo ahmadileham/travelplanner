@@ -13,6 +13,9 @@
         <p>Trip Dates: [[${#dates.format(tripStart, 'yyyy-MM-dd')}]] to [[${#dates.format(tripEnd, 'yyyy-MM-dd')}]]</p>
         
         <form th:action="@{/itinerary/save(tripId=${tripId})}" method="post" th:object="${activityDTO}">
+            <div th:if="${errorMessage}" class="alert alert-danger">
+                <p th:text="${errorMessage}"></p>
+            </div>
             <div id="activities">
                 <div class="activity mb-3 border p-3" 
                      th:each="activity, stat : *{activities}">
